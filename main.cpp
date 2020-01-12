@@ -4,89 +4,268 @@
 #include <conio.h>
 #include <fstream>
 #include <algorithm>
-
 using namespace std;
 
-string login, haslo;
-char wybor;
+class User {
 
-int main()
-{
-    for(;;)
-{
-    cout << "<<<<<<<<<<<<<<<<<<< ZAKUPKI.PL >>>>>>>>>>>>>>>>>>>" << endl;
-    cout << "-------------------------------------------------" << endl<<endl;
-    cout << "1. Rejestracja" << endl;
-    cout << "2. Logowanie" << endl;
-    cout << "3. Przegladaj oferty" << endl;
-    cout << "4. Wyjdz" << endl;
-wybor=getch();
-fstream logowanie;
-            logowanie.open("logowanie.txt",ios::out | ios::app);
-            logowanie<<login<<endl;
-            logowanie<<haslo<<endl  ;
+public:
+    string username;
+    string password;
+    string iUsername;
+    string iPassword;
 
-
-
-string przedmiot[1000];
-int cena[1000];
-int nr_linii=1;
-int nr_aukcji=0;
-    string linia;
-fstream aukcje;
-    aukcje.open("aukcje.txt",ios::in);
-    if (aukcje.good()==false)
+string nazwap;
+    // Funkcja Rejestracji
+    void userRegisterDo()
     {
-        cout<<"Nie udalo sie otworzyc pliku!";
-        exit(0);
-    }
-    while(getline(aukcje,linia))
-    {
-        switch(nr_linii)
+
+        ofstream usersFile ("dane.txt");
+
+        if (	!usersFile.is_open())
         {
-            case 1: przedmiot[nr_aukcji] = linia;                     break;
-            case 2: cena[nr_aukcji] = linia;                      break;
+            usersFile.open("dane.txt");
         }
 
-        if (nr_linii==2) {nr_linii=0; nr_aukcji++;}
-        nr_linii++;
+            usersFile << username << " " << password << endl;
+
+            usersFile.close();
     }
 
-
-
- switch(wybor)
+    // Rejestracja
+    void userRegister()
     {
-    case '1':
-            cout<<"<<<<<<<<<<<<<<<<<<<<< REJESTRACJA >>>>>>>>>>>>>>>>>>>"<<endl<<endl<<endl;
-            cout << "Podaj swoj przyszly login:  " ;        cin>>login;
-            cout << "Podaj swoje przyszle haslo:  " ;       cin>>haslo;
-            cout << "Podaj nr konta bankowego(123456789):  " << endl;
+        cout << "\n\n<<<<<<<<<<<<<<<<<<< ZAKUPKI.PL >>>>>>>>>>>>>>>>>>>\n" << endl;
+        cout << "Witaj! Widzimy ze jestes tu pierwszy raz!\n\nZarejestruj sie!.\nWprowadz przyszla nazwe uzytkownika:\n";
+        cin >> username;
+
+        cout << "\nWprowadz twoje przyszle haslo:\n";
+        cin >> password;
+
+        userRegisterDo();
+    }
+
+    // Funkcja logowania
+    void login()
+    {
+        cout << "\n\n<<<<<<<<<<<<<<<<<<< ZAKUPKI.PL >>>>>>>>>>>>>>>>>>>\n" << endl;
+        cout << "Wprowadz nazwe uzytkownika:\n";
+        cin >> iUsername;
+
+        cout << "\nWprowadz haslo:\n";
+        cin >> iPassword;
+
+        string userAndPass = iUsername + " " + iPassword;
+        int offset;
+        string line;
+        ifstream usersFile;
+        usersFile.open ("dane.txt");
+
+        if(usersFile.is_open())
+        {
+           bool found = false;
+      if(usersFile.is_open()) {
+          while(getline(usersFile,line) && !found) {
+              if (line.compare(userAndPass) == 0) {
+                  found = true;
+              }
+          }
+	usersFile.close();
+	if(found) {
+            cout << "\n\n<<<<<<<<<<<<<<<<<<< ZAKUPKI.PL >>>>>>>>>>>>>>>>>>>" << endl;
+		cout << "\n\nWitaj "<< iUsername <<"!"<<'\n';
+	}
+	else {
+		cout << "\nBledny login lub haslo! Sprobuj ponownie!\n\n\n\n";
+		login();
+	}
+
+            }
+
+			usersFile.close();
+        }
+
+        else
+            cout << "Unable to open dane.txt file." << endl;
+    }
+
+};
+char wybor,cos;
+
+// Główny program
+int main() {
 
 
 
-            logowanie.close();
 
+
+
+    User user1;
+    ifstream usersFile("dane.txt");
+    long begin, end;
+
+    if (usersFile.good())
+    {
+        cout << "Masz juz konto! Zaloguj sie!\n\n";
+    }
+
+    else {
+        user1.userRegister();
+        cout << "\n\nUdalo Ci sie zalozyc konto! Zaloguj sie teraz!\n\n";
+        user1.login();
+        cout << "-------------------------------------------------" << endl<<endl;
+    cout << "1. Przegladaj oferty" << endl;
+    cout << "2. Dodaj oferte" << endl;
+    cout << "3. Wyjdz" << endl;
+
+
+
+
+    cin >> cos;
+switch(cos)
+    {
+    case '1':{
+  ifstream file("sell.txt");
+  string linia;
+  cout << "\n\n<<<<<<<<<<<<<<<<<<< OFERTY: >>>>>>>>>>>>>>>>>>>\n\n" << endl;
+  while (getline(file, linia)) {
+
+    cout << linia <<"pln" <<"\n\n";
+  }
+}
     break;
 
     case '2':
-            cout<<"<<<<<<<<<<<<<<<<<<<<< LOGOWANIE >>>>>>>>>>>>>>>>>>>"<<endl<<endl<<endl;
-            cout << "Login:  " << endl;
-            cout << "Haslo:  " << endl;
+    {
+        string item;
+        int cena;
+        cout << "Co sprzedajesz: "<<"  ";         cin>>item;
+        cout << "Podaj cene: "<<"  ";    cin>>cena;
+
+
+    fstream plik;
+    plik.open("sell.txt",ios::out | ios::app);
+
+    plik<<item<<"   "
+    <<cena<<endl;
+
+
+
+    plik.close();
+
+
+    }
+
+
+
     break;
 
     case '3':
-            cout<<"<<<<<<<<<<<<<<<<<<<<< OFERTY >>>>>>>>>>>>>>>>>>>"<<endl<<endl<<endl;
-            aukcje.close();
-
-    break;
-
-    case '4':
             exit(0);
     break;
-    default: cout<<"Nie ma takiej opcji w menu!";
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
-    getchar();getchar();
-    system("cls");
+
+    if(usersFile.is_open())
+    {
+        begin = usersFile.tellg();
+        usersFile.seekg (0, ios::end);
+
+        end = usersFile.tellg();
+        usersFile.close();
+
+        if(begin == end)
+        {
+            user1.userRegister();
+
+        }
+
+        else
+            {
+                user1.login();
+
+
+    cout << "-------------------------------------------------" << endl<<endl;
+    cout << "1. Przegladaj oferty" << endl;
+    cout << "2. Dodaj oferte" << endl;
+    cout << "3. Wyjdz" << endl;
+
+
+    cin >> wybor;
+
+
+
+    switch(wybor)
+    {
+    case '1':{
+  ifstream file("sell.txt");
+  string linia;
+  cout << "\n\n<<<<<<<<<<<<<<<<<<< OFERTY: >>>>>>>>>>>>>>>>>>>\n\n" << endl;
+  while (getline(file, linia)) {
+
+    cout << linia <<"pln" <<"\n\n";
+  }
 }
-    return 0;
+    break;
+
+    case '2':
+    {
+        string item;
+        int cena;
+        cout << "Co sprzedajesz: "<<"  ";         cin>>item;
+        cout << "Podaj cene: "<<"  ";    cin>>cena;
+
+
+    fstream plik;
+    plik.open("sell.txt",ios::out | ios::app);
+
+    plik<<item<<"   "
+    <<cena<<endl;
+
+
+
+    plik.close();
+
+
+    }
+
+
+
+    break;
+
+    case '3':
+            exit(0);
+    break;
+
+
+
+default: cout<<"Nie ma takiej opcji w menu!";
+
+    }
+            }
+    }
+
+    getch();
 }
+
