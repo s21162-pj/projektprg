@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <cstdlib>
-#include <curses.h>
+#include <conio.h>
 #include <fstream>
 #include <algorithm>
 using namespace std;
@@ -93,12 +93,6 @@ char wybor,cos;
 
 // Główny program
 int main() {
-
-
-
-
-
-
     User user1;
     ifstream usersFile("dane.txt");
     long begin, end;
@@ -112,13 +106,11 @@ int main() {
         user1.userRegister();
         cout << "\n\nUdalo Ci sie zalozyc konto! Zaloguj sie teraz!\n\n";
         user1.login();
+
         cout << "-------------------------------------------------" << endl<<endl;
     cout << "1. Przegladaj oferty" << endl;
     cout << "2. Dodaj oferte" << endl;
     cout << "3. Wyjdz" << endl;
-
-
-
 
     cin >> cos;
 switch(cos)
@@ -140,6 +132,7 @@ switch(cos)
         int cena;
         cout << "Co sprzedajesz: "<<"  ";         cin>>item;
         cout << "Podaj cene: "<<"  ";    cin>>cena;
+    system ("cls");
 
 
     fstream plik;
@@ -148,26 +141,15 @@ switch(cos)
     plik<<item<<"   "
     <<cena<<endl;
 
-
-
     plik.close();
 
 
     }
-
-
-
     break;
 
     case '3':
             exit(0);
     break;
-
-
-
-
-
-
 }
 
     }
@@ -190,7 +172,7 @@ switch(cos)
             {
                 user1.login();
 
-
+skok:
     cout << "-------------------------------------------------" << endl<<endl;
     cout << "1. Przegladaj oferty" << endl;
     cout << "2. Dodaj oferte" << endl;
@@ -212,14 +194,15 @@ switch(cos)
     cout << linia <<"pln" <<"\n\n";
   }
 }
+goto skok;
     break;
 
     case '2':
     {
         string item;
         int cena;
-        cout << "Co sprzedajesz: "<<"  ";         cin>>item;
-        cout << "Podaj cene: "<<"  ";    cin>>cena;
+        cout << "Co sprzedajesz: "<<"  "<<endl;        cin>>item;
+        cout << "Podaj cene: "<<"  "<<endl;   cin>>cena;
 
 
     fstream plik;
@@ -228,14 +211,12 @@ switch(cos)
     plik<<item<<"   "
     <<cena<<endl;
 
-
-
-    plik.close();
+        plik.close();
 
 
     }
-
-
+        system("cls");
+    goto skok;
 
     break;
 
@@ -243,14 +224,8 @@ switch(cos)
             exit(0);
     break;
 
-
-
 default: cout<<"Nie ma takiej opcji w menu!";
 
-    }
-            }
-    }
-
-    getch();
+    }}}
+getch();
 }
-
