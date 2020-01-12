@@ -170,21 +170,6 @@ switch(cos)
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
     if(usersFile.is_open())
