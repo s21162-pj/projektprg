@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <cstdlib>
-#include <conio.h>
+#include <curses.h>
 #include <fstream>
 #include <algorithm>
 using namespace std;
